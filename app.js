@@ -15,7 +15,7 @@ const categoriesRouter = require("./src/routers/categories");
 const productRouter = require("./src/routers/products");
 // const userApi = require("./src/api/userApi");
 // const productsApi = require("./src/api/productApi");
-// const categoryApi = require("./src/api/categoryApi");
+ const categoryProductApi = require("./src/api/categoryProductApi");
 // const favoritesApi = require("./src/api/favoriteApi");
 // const AddressApi = require("./src/api/addressApi");
 // const imageApi = require("./src/api/imageApi");
@@ -40,7 +40,7 @@ app.use("/", productRouter);
 // app.use("/", orderRouter);
 // app.use("/", userApi);
 // app.use("/", AddressApi);
-// app.use("/", categoryApi);
+ app.use("/", categoryProductApi);
 // app.use("/", productsApi);
 // app.use("/", imageApi);
 // app.use("/", favoritesApi);
@@ -49,7 +49,7 @@ app.use("/", productRouter);
 
 const PORT = 3030;
 const uri =
-  "mongodb+srv://quangduong27062003:7ZHxAu980Wdyfjkj@cluster0.9mcis.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+  "mongodb+srv://leducdung02072004:g4H7FdXialfs66Cn@beebarber.ynx9m.mongodb.net/BeeBarber?retryWrites=true&w=majority&appName=BeeBarber";
 
 // const registrationToken =
 //   "eg9lMD6RTVC0DCFxXoRP7p:APA91bFHmDd-eYkvG0Ea1yR6rTLYba2FW8XqIKYEOX1PekB3r5nopDfJUMWdA-O8nD9rVPTnwoAEeLAf0UhD4DMVezcBLfNGqudsteLBSWaRNRA7jcqDTLC2xiOZMFC5dKHeLthJW2rn"; // replace with the actual device token
