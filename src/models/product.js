@@ -13,7 +13,11 @@ const productShema = new mongoose.Schema({
         type: String,
         required: true
     },
-    price: {
+    import_price: {
+        type: Number,
+        required: true
+    },
+    price_selling: {
         type: Number,
         required: true
     },

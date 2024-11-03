@@ -1,44 +1,37 @@
-const CategoryProduct = require("../models/categoryProduct")
-const CategoryProductModel = require("../models/categoryProduct")
+const Product = require("../models/product")
+const ProductModel = require("../models/product")
 
-exports.getCategoryProduct = async (req,res)=>{
-
-    const categories = await CategoryProductModel.find()
-    if(categories){
-        res.status(200).json({
-            status:200,
-            message:"get categories success",
-            data: categories
-        })
+exports.getAllProduct = async (req,res)=>{
+    const products = await ProductModel.find()
+    if(products){
+        res.status(200).json({status:200, message:"Get all products success", data:products})
     }else{
-        res.status(404).json({
-            status:404,
-            message:"Not found category",
-            data:[]
-        })
+        res.status(404).json({status:404, message:"Get all products fail"})
     }
 }
-exports.addCategoryProduct = async (req,res)=>{
+exports.addProduct = async (req,res)=>{
     try{
-        const {name, description,file, status} = req.body
-        console.log(name,description,file, status)
+        const {categoryId,name,import_price,price_selling,description,status} = req.body
         let image = null;
         if (req.file) {image = `${req.protocol}://localhost:3030/uploads/${req.file.filename}`;}
-        const newCategory = new CategoryProduct({
+        const newProduct = new Product({
+            categoryId:categoryId,
             name:name,
+            imageUrl:image,
+            import_price:import_price,
+            price_selling:price_selling,
             description:description,
-            image:image,
             status:status
         })
-        const categoryExists = await CategoryProductModel.findOne({name:name})
-        if(categoryExists){
-           res.status(404).json({status:404, message:"category already exists"})
+        const productExists = await ProductModel.findOne({name:name})
+        if(productExists){
+           res.status(404).json({status:404, message:"product already exists"})
         }else{
-            const addCategory = await newCategory.save()
-            if(addCategory){
-                res.status(201).json({status:201, message:"add category success", data:addCategory})
+            const addProduct = await newProduct.save()
+            if(addProduct){
+                res.status(201).json({status:201, message:"add product success", data:addProduct})
             }else{
-                res.status(404).json({status:404, message:"add category fail"})
+                res.status(404).json({status:404, message:"add product fail"})
             }
         }
     }catch(error){
