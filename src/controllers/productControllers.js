@@ -38,61 +38,63 @@ exports.addProduct = async (req,res)=>{
         res.status(500).json({status:500, message:`${error}`})
     }
 }
-exports.updateCatgoryProduct = async (req,res)=>{
+exports.updateProduct = async (req,res)=>{
     try {
         const _id = req.params.id
-        const {name, description,file, status} = req.body
-        console.log(name,description,file, status)
+        const {categoryId,name,import_price,price_selling,description,status} = req.body
         let image = null;
         if (req.file) {image = `${req.protocol}://localhost:3030/uploads/${req.file.filename}`;}
-        const updateCatgory = await CategoryProductModel.findByIdAndUpdate(_id,
-             {name:name,
-                description:description,
-                image: image,
-                status:status
+        const updateProduct = await ProductModel.findByIdAndUpdate(_id,{
+            categoryId:categoryId,
+            name:name,
+            imageUrl:image,
+            import_price:import_price,
+            price_selling:price_selling,
+            description:description,
+            status:status
              },{
                 new:true
              })
-             if(updateCatgory){
+             if(updateProduct){
                 res.status(200).json({
                     status:200,
-                    message:"update catgory success",
-                    data:updateCatgory
+                    message:"update product success",
+                    data:updateProduct
                 })
              }else{
                 res.status(404).json({
                     status:404,
-                    message:"update category fail"
+                    message:"update product fail"
                 })
              }
     } catch (error) {
         res.status(500).json({status:500, message: `${error}`})
     }
 }
-exports.deleteCategoryProduct = async (req,res)=>{
+exports.deleteProduct = async (req,res)=>{
     try {
-        const _id = req.params.id
-        const categoryExists = await CategoryProductModel.findById({_id:_id})
-        if(categoryExists){
-            const deleteCategory = await CategoryProductModel.findByIdAndDelete(_id)
-            if(deleteCategory){
-                res.status(200).json({status:200, message:"delete category success", data: deleteCategory})
+        const _id = req.query.id
+        const productExists = await ProductModel.findById({_id:_id})
+        if(productExists){
+            const deleteProduct = await ProductModel.findByIdAndDelete(_id)
+            if(deleteProduct){
+                res.status(200).json({status:200, message:"delete product success", data: deleteProduct})
             }else{
-                res.status(404).json({status:404, message:"delete category fail"})
+                res.status(404).json({status:404, message:"delete product fail"})
             }
         }
     } catch (error) {
         res.status(500).json({status:500, message:`${error}`})
     }
 }
-exports.getCategoryProduct = async (req,res)=>{
+exports.getProduct = async (req,res)=>{
     try {
-        const {id} = req.query
-        const categoryExists = await CategoryProductModel.findOne({_id:id})
-        if(categoryExists){
-                res.status(200).json({status:200, message:"Get category success", data: categoryExists})
+        const _id = req.query.id
+        const productExists = await ProductModel.findOne({_id:_id})
+        if(productExists){
+                res.status(200).json({status:200, message:"Get product success", data: productExists})
             }else{
-                res.status(404).json({status:404, message:"Not found category"})
+                res.status(404).json({status:404, message:"Not found product"})
             }
     } catch (error) {
         res.status(500).json({status:500, message:`${error}`})

@@ -74,7 +74,7 @@ exports.updateCatgory = async (req,res)=>{
 }
 exports.deleteCategory = async (req,res)=>{
     try {
-        const _id = req.params.id
+        const _id = req.query.id
         const categoryExists = await CategoryModel.findById({_id:_id})
         if(categoryExists){
             const deleteCategory = await CategoryModel.findByIdAndDelete(_id)
@@ -90,7 +90,7 @@ exports.deleteCategory = async (req,res)=>{
 }
 exports.getCategory = async (req,res)=>{
     try {
-        const {id} = req.query
+        const {id} = req.query.id
         const categoryExists = await CategoryModel.findOne({_id:id})
         if(categoryExists){
                 res.status(200).json({status:200, message:"Get category success", data: categoryExists})
