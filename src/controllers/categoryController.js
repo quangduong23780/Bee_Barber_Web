@@ -1,7 +1,7 @@
 const CategoryProduct = require("../models/categoryProduct")
 const CategoryProductModel = require("../models/categoryProduct")
 
-exports.getCategoryProduct = async (req,res)=>{
+exports.getAllCategoryProduct = async (req,res)=>{
 
     const categories = await CategoryProductModel.find()
     if(categories){
@@ -105,3 +105,20 @@ exports.getCategoryProduct = async (req,res)=>{
         res.status(500).json({status:500, message:`${error}`})
     }
 }
+exports.getCategoryById = async (req, res) => {
+    const categoryId = req.params.id;
+  
+    try {
+      const category = await CategoryProductModel.findById(categoryId);
+      if (category) {
+        res.status(200).json({
+          status: 200,
+          category: category,
+        });
+      } else {
+        res.status(404).json({ status: 404, message: "Không tìm thấy thể loại" });
+      }
+    } catch (error) {
+      res.status(400).json({ status: 400, message: error.message });
+    }
+  };

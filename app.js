@@ -13,7 +13,7 @@ const homeRouter = require("./src/routers/home");
 const categoriesRouter = require("./src/routers/categories");
 // const orderRouter = require("./src/routers/order");
 const productRouter = require("./src/routers/products");
-// const userApi = require("./src/api/userApi");
+ const userApi = require("./src/api/userApi");
  const productsApi = require("./src/api/productApi");
  const categoryProductApi = require("./src/api/categoryProductApi");
  const categoryServiceApi = require("./src/api/categoryServiceApi")
@@ -40,7 +40,7 @@ app.use("/", homeRouter);
 app.use("/", categoriesRouter);
 app.use("/", productRouter);
 // app.use("/", orderRouter);
-// app.use("/", userApi);
+ app.use("/", userApi);
 // app.use("/", AddressApi);
  app.use("/", categoryProductApi);
  app.use("/", categoryServiceApi);

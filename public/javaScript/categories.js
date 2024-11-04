@@ -2,11 +2,11 @@ const query_search = document.getElementById("query-search");
 const btn_search = document.getElementById("btn-search");
 let dataCategory = [];
 
-fetch("/api/get/categories")
+fetch("/api/get/categories_product")
   .then((response) => response.json())
   .then((data) => {
-    displayCategories(data.categories)
-    dataCategory = data.categories
+    displayCategories(data.data)
+    dataCategory = data.data
   })
   .catch((error) => console.error("Error fetching category:", error));
 

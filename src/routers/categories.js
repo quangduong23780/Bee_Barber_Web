@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/categories", (req, res) => {
+router.get("/categories_product", (req, res) => {
   res.render("categories");
 });
 router.get("/addcategory", (req, res) => {

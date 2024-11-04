@@ -2,8 +2,7 @@ const express = require("express")
 const productController = require("../controllers/productControllers")
 const router = express.Router()
 
-const multer = require('multer')
-const upload = multer({ dest: 'uploads/' });
+const upload = require('../../public/config/uploads')
 
 router.get("/api/get_all/product",productController.getAllProduct)
 router.post("/api/post/add_product",upload.single('file'), productController.addProduct)

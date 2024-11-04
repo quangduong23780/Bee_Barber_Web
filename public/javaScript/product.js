@@ -15,10 +15,10 @@ async function getNamecategory(idCategory) {
   }
 }
 function getData(){
-  fetch("/api/products")
+  fetch("/api/get_all/product")
   .then((response) => response.json())
   .then((data) => {
-    dataProducts = data.products;
+    dataProducts = data.data;
     displayProducts(dataProducts);
   })
   .catch((error) => console.error("Error fetching products:", error));
@@ -45,15 +45,15 @@ async function displayProducts(products) {
     newRow.innerHTML = `
       <td class="h5">${product._id}</td>
       <td class="h5">${product.name}</td>
-      <td> <img src="${product.image64[0]}" style="max-width: 100px; max-height: 100px;" class="rounded mx-auto d-block" alt="Fstyle shop"></td>
+      <td> <img src="${product.imageUrl}" style="max-width: 100px; max-height: 100px;" class="rounded mx-auto d-block" alt="Fstyle shop"></td>
       <td class="h5">${product.brand}</td>
       <td class="h5">${product.size}</td>
-      <td class="h5">${product.price.toLocaleString()}</td>
+      <td class="h5">${product.price_selling.toLocaleString()}</td>
       <td class="h5">${product.color}</td>
       <td class="h5">${product.quantity}</td>
-      <td class="h5">${product.quantity===0 ?"Hết hàng": "Còn hàng"}</td>
+      <td class="h5">${product.status===0 ?"Hết hàng": "Còn hàng"}</td>
       <td class="h5">${product.description}</td>
-      <td class="h5">${await getNamecategory(product.category)}</td>
+      <td class="h5">${await getNamecategory(product.category_id)}</td>
       <td><a href="${product._id}"style="color:
        #007bff; font-size:15px; text-decoration: underline;"
        >Ngừng bán</a></td>
