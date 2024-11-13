@@ -170,7 +170,7 @@ event.preventDefault();
     if(!checkUsername(username)){
         showError(username, "Username phải từ 8 đến 20 kí tự")
     }
-    fetch("/api/user/post", {
+    fetch("/api/post/sign_up", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json' 
@@ -185,11 +185,11 @@ event.preventDefault();
     })
     .then(response => response.json())
     .then(data => {
-        if (data.message==="Email đã tồn tại") {
-            showAlert("Email đã tồn tại");
+        if (data.message==="Email already exists") {
+            alert("Email đã tồn tại");
            return;
-        } else if(data.message==="Đã tạo mới người dùng thành công.") {
-            showAlert("Đã tạo mới người dùng thành công.");
+        } else if(data.message==="Đăng ký thành công") {
+            alert("Đã tạo mới người dùng thành công.");
             container.classList.remove("right-panel-active");
             titleElement.textContent = 'Login';
              username.value = '';
@@ -198,12 +198,12 @@ event.preventDefault();
             password.value = '';
             repassword.value = '';
         }else{
-            showAlert("Tạo tài khoản thất bại");
+            alert("Tạo tài khoản thất bại");
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        showAlert("Vui lòng thử lại sau");
+        alert("Vui lòng thử lại sau");
     });
 });
 
@@ -288,7 +288,7 @@ lgForm.addEventListener('submit', function (e){
         showError2(lgPassword, "*Mật khẩu phải từ 8 đến 20 kí tự");
         return; 
     }
-    fetch("/api/user/signin", {
+    fetch("/api/post/sign_in", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json' 
@@ -301,15 +301,15 @@ lgForm.addEventListener('submit', function (e){
     })
     .then(response => response.json())
     .then(data => {
-        if (data.message === "User not found") {
+        if (data.message === "User Not Found") {
             alert("Email không tồn tại.");
-        } else if (data.message === "sai mật khẩu") {
+        } else if (data.message === "Password Is Incorrect") {
             alert("Mật khẩu không đúng.");
         } else {
-            if(data.isAdmin){
+            if(data.data.role == "admin"){
                 window.location.href = "/home";
             }else {
-                alert('Bạn không có quyền truy cập vào trang này.');
+               alert('Bạn không có quyền truy cập vào trang này.');
             }
         }
     })
