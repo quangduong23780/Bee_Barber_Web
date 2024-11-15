@@ -103,6 +103,6 @@ exports.getUser = async (req,res)=>{
     if(user){
         res.status(200).json({status:200, message:"Get User Success", data: user})
     }else{
-        res.status(404).json({status:404, message:"User Not Found"})
+        res.status(401).json({status:404, message:"User Not Found"})
     }
 }
