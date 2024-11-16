@@ -1,20 +1,17 @@
 const nameInputPro = document.getElementById("product-name");
-const brandInput = document.getElementById("product-brand");
-let checkboxes = document.querySelectorAll('input[name="size"]:checked');
+const importPriceInput = document.getElementById("product-import_price");
 const priceInput = document.getElementById("product-price");
-const colorInput = document.getElementById("product-color");
+const fileInput = document.getElementById("product-file");
 const quantityInput = document.getElementById("product-quantity");
 const descriptionInput = document.getElementById("product-description");
 const categorySelect = document.getElementById("product-category-name"); 
-const imageInputPro = document.getElementById("product-image");
 const addButtonPro = document.getElementById("btn-add-product");
 const nameErrorPro = document.querySelector("#productname-error");
-const brandError = document.querySelector("#brand-error");
+const brandError = document.querySelector("#import_price-error");
 const priceError = document.querySelector("#price-error");
-const sizeError = document.querySelector("#size-error");
 const quantityError = document.querySelector("#quantity-error");
-const colorError = document.querySelector("#color-error");
-const descError = document.querySelector("#description-error");
+const fileError = document.querySelector("#file-error");
+const descErrorProduct = document.querySelector("#description-error");
 const imageErrorPro = document.querySelector("#productimage-error");
 
 let idCategory='';
@@ -55,9 +52,9 @@ function showSuccess(input) {
 populateCategorySelect();
 async function loadCategories() {
   try {
-    const response = await fetch("/api/get/categories");
+    const response = await fetch("/api/get/categories_product");
     const data = await response.json();
-    return data.categories;
+    return data.data;
   } catch (error) {
     console.error("Error loading categories:", error);
     return [];
@@ -84,63 +81,32 @@ function checkCategorySelected(){
     }
 }
 //end category
-//phần size
-function getSelectedSizes() {
-  checkboxes = document.querySelectorAll('input[name="size"]:checked');
-  let selectedSizes = [];
-  checkboxes.forEach(function(checkbox) {
-    selectedSizes.push(checkbox.value);
-  });
-  const selectedSizesString = selectedSizes.join(",");
-  return selectedSizesString;
-}
-function convertSize(size){
-  const mang = size.split(",");
-  return mang;
-}
-function checkSizeSelected() {
-  const selectedSizes = getSelectedSizes();
-  if (selectedSizes === '') {
-    sizeError.innerText='*Size is required'
-    sizeError.style.color='red'
-    return false;
-  } else {
-    sizeError.innerText=""
-    return true;
-  }
-}
-//end size
 //click
 addButtonPro.addEventListener("click", function (e) {
   e.preventDefault();
   checkCategorySelected();
-  console.log(getSelectedSizes());
-  if (checkRequired([nameInputPro, brandInput, priceInput, quantityInput, colorInput, descriptionInput,imageInputPro])&&!checkSizeSelected()) {
+  
+  if (checkRequired([nameInputPro, importPriceInput, priceInput, quantityInput, descriptionInput])) {
     return;
   }
-  createProduct()
+  const formData = new FormData();
+  formData.append("name", nameInputPro.value)
+  formData.append("categoryId", idCategory)
+  formData.append("file", fileInput.files[0])
+  formData.append("import_price", importPriceInput.value)
+  formData.append("price_selling", priceInput.value)
+  formData.append("description", descriptionInput.value)
+  formData.append("quantity", quantityInput.value)
+  createProduct(formData)
 });
-async function createProduct(){
-  const arrayImage = imageInputPro.value.split(',')
-  const newProduct = await fetch("/api/products", {
+async function createProduct(formData){
+  const newProduct = await fetch("/api/post/add_product", {
+
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      name: nameInputPro.value,
-      image64: arrayImage,
-      brand: brandInput.value,
-      size: convertSize(getSelectedSizes()),
-      price: priceInput.value,
-      color: colorInput.value,
-      quantity: quantityInput.value,
-      description: descriptionInput.value,
-      categoryId: idCategory,
-    }),
+    body: formData
   })
     const data = await newProduct.json()
-      if (data.message === "Sản phẩm được thêm thành công") {
+      if (data.message === "add product success") {
         alert(data.message)
         window.location.replace("/products");
       } else {

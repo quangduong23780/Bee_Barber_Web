@@ -2,14 +2,14 @@ const mongoose = require('mongoose');
 
 const productShema = new mongoose.Schema({
     categoryId: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"CategoryProduct"
     },
     name: {
         type: String,
         required: true
     },
-    imageUrl: {
+    image: {
         type: String,
         required: true
     },
@@ -28,6 +28,10 @@ const productShema = new mongoose.Schema({
     status: {
         type: Boolean,
         default: true
+    },
+    quantity:{
+        type:Number,
+        required: true
     }
 });
 

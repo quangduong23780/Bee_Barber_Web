@@ -45,13 +45,13 @@ async function displayProducts(products) {
     newRow.innerHTML = `
       <td class="h5">${product._id}</td>
       <td class="h5">${product.name}</td>
-      <td> <img src="${product.imageUrl}" style="max-width: 100px; max-height: 100px;" class="rounded mx-auto d-block" alt="Fstyle shop"></td>
-      <td class="h5">${product.import_price}</td>
+      <td> <img src="${product.image}" style="max-width: 100px; max-height: 100px;" class="rounded mx-auto d-block" alt="Fstyle shop"></td>
+      <td class="h5">${product.import_price.toLocaleString()}</td>
       <td class="h5">${product.price_selling.toLocaleString()}</td>
       <td class="h5">${product.quantity}</td>
-      <td class="h5">${product.status=== false ?"Hết hàng": "Còn hàng"}</td>
+      <td class="h5">${product.quantity === 0 ?"Hết hàng": "Còn hàng"}</td>
       <td class="h5">${product.description}</td>
-      <td class="h5">${await getNamecategory(product.category_id)}</td>
+      <td class="h5">${await getNamecategory(product.categoryId)}</td>
       <td><a href="${product._id}"style="color:
        #007bff; font-size:15px; text-decoration: underline;"
        >Ngừng bán</a></td>
@@ -72,11 +72,11 @@ document.getElementById("products-list").addEventListener("click",async function
       fetch(`/api/products/update/quantity/${productId}`)
       .then(res => res.json())
       .then(data =>{
-      if(data.message==="update thành công"){
+      if(data.message==="update product success"){
         $("#confirmModalProduct").modal('hide')
         alert("update thành công")
         getData()
-      }else if(data.message==="update thất bại"){
+      }else if(data.message==="update product failed"){
         alert("update thất bại")
       }else{
         alert("Không tìm thấy sản phẩm")

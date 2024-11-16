@@ -11,17 +11,17 @@ exports.getAllProduct = async (req,res)=>{
 }
 exports.addProduct = async (req,res)=>{
     try{
-        const {categoryId,name,import_price,price_selling,description,status} = req.body
+        const {categoryId,name,import_price,price_selling,description,quantity} = req.body
         let image = null;
         if (req.file) {image = `${req.protocol}://localhost:3030/uploads/${req.file.filename}`;}
         const newProduct = new Product({
             categoryId:categoryId,
             name:name,
-            imageUrl:image,
+            image:image,
             import_price:import_price,
             price_selling:price_selling,
             description:description,
-            status:status
+            quantity:quantity
         })
         const productExists = await ProductModel.findOne({name:name})
         if(productExists){
@@ -31,7 +31,7 @@ exports.addProduct = async (req,res)=>{
             if(addProduct){
                 res.status(201).json({status:201, message:"add product success", data:addProduct})
             }else{
-                res.status(404).json({status:404, message:"add product fail"})
+                res.status(404).json({status:404, message:"add product failed"})
             }
         }
     }catch(error){
@@ -41,17 +41,9 @@ exports.addProduct = async (req,res)=>{
 exports.updateProduct = async (req,res)=>{
     try {
         const _id = req.params.id
-        const {categoryId,name,import_price,price_selling,description,status} = req.body
-        let image = null;
-        if (req.file) {image = `${req.protocol}://localhost:3030/uploads/${req.file.filename}`;}
         const updateProduct = await ProductModel.findByIdAndUpdate(_id,{
-            categoryId:categoryId,
-            name:name,
-            imageUrl:image,
-            import_price:import_price,
-            price_selling:price_selling,
-            description:description,
-            status:status
+            quantity: 0,
+            status: false
              },{
                 new:true
              })
@@ -62,9 +54,9 @@ exports.updateProduct = async (req,res)=>{
                     data:updateProduct
                 })
              }else{
-                res.status(404).json({
-                    status:404,
-                    message:"update product fail"
+                res.status(401).json({
+                    status:401,
+                    message:"update product failed"
                 })
              }
     } catch (error) {
