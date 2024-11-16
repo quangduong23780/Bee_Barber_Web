@@ -1,7 +1,9 @@
 const nameInput = document.getElementById('category-name');
+const descInput = document.getElementById('category-desc');
 const imageInput = document.getElementById("category-image");
 const addButton = document.getElementById("btn-add");
 const nameError = document.querySelector("#categoryname-error");
+const descError = document.querySelector("#categorydesc-error");
 const imageError = document.querySelector("#categoryimage-error");
 //check name
 function checkName(nameInput){
@@ -11,9 +13,15 @@ function checkName(nameInput){
     }
     return true;
 }
-
+function checkDesc(descInput){
+    if(descInput.value.length === 0){
+      descError.textContent = "*Vui lòng nhập chi tiết thể loại";
+      return false;
+    }
+    return true;
+}
 function checkImageSelected(imageInput) {
-    if (imageInput.value.length === 0) {
+    if (!imageInput.files[0]) {
         imageError.textContent ="*Vui lòng nhập link ảnh";
         return false;
     }
@@ -22,29 +30,29 @@ function checkImageSelected(imageInput) {
 
 addButton.addEventListener('click',  function(e) {
     e.preventDefault();
-    if (!checkName(nameInput) || !checkImageSelected(imageInput)) {
+    if (!checkName(nameInput) || !checkDesc(descInput) || !checkImageSelected(imageInput)) {
         return;
     }
-        fetch("/api/post/categories", {
+    const formData = new FormData();
+    formData.append("name", nameInput.value)
+    formData.append("description", descInput.value)
+    formData.append("file", imageInput.files[0])
+
+        fetch("/api/post/add_category_product", {
             method: "POST",
-            headers: {
-                'Content-Type': 'application/json' 
-            },
-            body: JSON.stringify({
-                name: nameInput.value,
-                image: imageInput.value
-            })
+            body: formData
+
         })
         .then(response=> response.json())
         .then(data =>{
-        if (data.message === "Tạo thể loại thành công") {
+        if (data.message === "add category success") {
             alert(data.message);
-            window.location.href = "/categories";
+            window.location.href = "/categories_product";
         } else {
             alert(data.message);
         }
         })
         .catch(err=>{
-            alert("Error: ",err)
+            alert(`Error:${err}`)
         })
 });
