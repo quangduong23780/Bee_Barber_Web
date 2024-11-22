@@ -51,7 +51,7 @@ async function displayProducts(products) {
       <td class="h5">${product.quantity}</td>
       <td class="h5">${product.quantity === 0 ?"Hết hàng": "Còn hàng"}</td>
       <td class="h5">${product.description}</td>
-      <td class="h5">${await getNamecategory(product.categoryId)}</td>
+      <td class="h5">${await getNamecategory(product.category_id)}</td>
       <td><a href="${product._id}"style="color:
        #007bff; font-size:15px; text-decoration: underline;"
        >Ngừng bán</a></td>

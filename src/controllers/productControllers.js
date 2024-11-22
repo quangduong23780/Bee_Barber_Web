@@ -15,7 +15,7 @@ exports.addProduct = async (req,res)=>{
         let image = null;
         if (req.file) {image = `${req.protocol}://localhost:3030/uploads/${req.file.filename}`;}
         const newProduct = new Product({
-            categoryId:categoryId,
+            category_id:categoryId,
             name:name,
             image:image,
             import_price:import_price,

@@ -13,7 +13,7 @@ exports.addService = async (req,res)=>{
     try {
         const {id_category,description,price,duration,name} = req.body
         const serviceExists = await ServiceModel.findOne({name:name})
-        let image = req.file ? `${req.protocol}://localhost:3030/uploads/${req.file.filename}`: null
+        let image = req.file ? `${req.protocol}://localhost:3000/uploads/${req.file.filename}`: null
         const service = new Service({
             id_category: id_category,
             description: description,
@@ -27,7 +27,7 @@ exports.addService = async (req,res)=>{
         }else{
             const addService = await service.save()
             if(addService){
-                res.status(201).json({status:201, message:"Add service success", data:addService})
+                res.status(201).json({status:201, message:"Add service successfully", data:addService})
             }else{
                 res.status(404).json({staus:404, message:"Add service fail"})
             }
@@ -42,7 +42,7 @@ exports.updateCService = async (req,res)=>{
         const {id_category,description,price,duration,name} = req.body
     
         let image = null;
-        if (req.file) {image = `${req.protocol}://localhost:3030/uploads/${req.file.filename}`;}
+        if (req.file) {image = `${req.protocol}://localhost:3000/uploads/${req.file.filename}`;}
         const updateService = await ServiceModel.findByIdAndUpdate(_id,{
             id_category: id_category,
             description: description,
@@ -90,11 +90,21 @@ exports.getService = async (req,res)=>{
         const {id} = req.query
         const serviceExists = await ServiceModel.findOne({_id:id})
         if(serviceExists){
-                res.status(200).json({status:200, message:"Get category success", data: serviceExists})
+                res.status(200).json({status:200, message:"Get service successfully", data: serviceExists})
             }else{
-                res.status(404).json({status:404, message:"Not found category"})
+                res.status(404).json({status:404, message:"Not found service"})
             }
     } catch (error) {
         res.status(500).json({status:500, message:`${error}`})
     }
 }
+exports.getListServiceByCategory = async (req, res, next) => {
+    try {
+      const { id_category } = req.params;
+      const services = await ServiceModel.find({ id_category }).sort({ createdAt: -1 });
+      res.status(200).json(services);
+    } catch (error) {
+      res.status(400).json({ msg: error.message });
+    }
+  };
+  
